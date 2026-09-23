@@ -2,57 +2,69 @@
 <html lang="en">
 <head>
 
-<script src='//libtl.com/sdk.js' data-zone='11874048' data-sdk='show_11874048'></script>
-    
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Desi Video</title>
+    <!-- Monetag SDK -->
+    <script src='//libtl.com/sdk.js' data-zone='11874048' data-sdk='show_11874048'></script>
+        
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desi Video</title>
 
-<style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #111;
-    color: #fff;
-}
+    <style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #111;
+        color: #fff;
+    }
 
-.header {
-    background: linear-gradient(45deg, #ff0057, #ff7b00);
-    padding: 20px;
-    text-align: center;
-    font-size: 24px;
-    font-weight: bold;
-}
+    .header {
+        background: linear-gradient(45deg, #ff0057, #ff7b00);
+        padding: 20px;
+        text-align: center;
+        font-size: 24px;
+        font-weight: bold;
+    }
 
-.container {
-    padding: 15px;
-}
+    .container {
+        padding: 15px;
+    }
 
-.post {
-    background: #1c1c1c;
-    padding: 15px;
-    margin-bottom: 15px;
-    border-radius: 10px;
-}
+    .post {
+        background: #1c1c1c;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 10px;
+    }
 
-.post h3 {
-    margin: 0 0 10px;
-}
+    .post h3 {
+        margin: 0 0 10px;
+    }
 
-.lock-btn {
-    display: inline-block;
-    padding: 10px 15px;
-    background: #ff0057;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    margin-top: 10px;
-}
+    .lock-btn {
+        display: inline-block;
+        padding: 10px 15px;
+        background: #ff0057;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        margin-top: 10px;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        width: 100%;
+        box-sizing: border-box;
+        text-align: center;
+    }
 
-.lock-btn:hover {
-    background: #ff2a75;
-}
-</style>
+    .lock-btn:hover {
+        background: #ff2a75;
+    }
+
+    .lock-btn:disabled {
+        background: #555;
+        cursor: not-allowed;
+    }
+    </style>
 
 </head>
 <body>
@@ -68,9 +80,9 @@ body {
         <h3>Uno Sir Viral Video</h3>
         <img src="IMG_20260426_223944_347.jpg" style="width:100%; border-radius:10px; margin-bottom:10px;">
         <p>Watch full premium content. Limited access only.</p>
-        <a class="lock-btn" href="https://cutt.ly/AyvQuRtm" target="_blank">
+        <button class="lock-btn" id="btn-1" onclick="handleUnlock('https://cutt.ly/AyvQuRtm', 'btn-1')">
             🔒 Unlock Now
-        </a>
+        </button>
     </div>
 
     <!-- Post 2 -->
@@ -78,9 +90,9 @@ body {
         <h3>Tanha Viral Video</h3>
         <img src="IMG_20260426_215107_531.jpg" style="width:100%; border-radius:10px; margin-bottom:10px;">
         <p>Don't miss this content. Only for real viewers.</p>
-        <a class="lock-btn" href="https://cutt.ly/AyvQuRtm" target="_blank">
+        <button class="lock-btn" id="btn-2" onclick="handleUnlock('https://cutt.ly/AyvQuRtm', 'btn-2')">
             🔒 Unlock Now
-        </a>
+        </button>
     </div>
 
     <!-- Post 3 -->
@@ -88,13 +100,58 @@ body {
         <h3>Arohi mim 3m 32s</h3>
         <img src="IMAGE_URL_HERE" style="width:100%; border-radius:10px; margin-bottom:10px;">
         <p>Hidden content. Click to access.</p>
-        <a class="lock-btn" href="https://cutt.ly/AyvQuRtm" target="_blank">
+        <button class="lock-btn" id="btn-3" onclick="handleUnlock('https://cutt.ly/AyvQuRtm', 'btn-3')">
             🔒 Unlock Now
-        </a>
+        </button>
     </div>
 
 </div>
-<script src="https://conscientiouscabbageadrift.com/35/f7/6a/35f76af80c32a6110e5f304b6124faa1.js"></script>
 
+<!-- Rewarded Popup Handler Script -->
+<script>
+function handleUnlock(targetUrl, buttonId) {
+    const unlockBtn = document.getElementById(buttonId);
+    const originalText = unlockBtn.innerText;
+
+    unlockBtn.innerText = "⏳ Loading Ad...";
+    unlockBtn.disabled = true;
+
+    // Trigger Rewarded Ad Popup
+    show_11874048('pop').then(() => {
+        // User successfully watched/closed the ad
+        unlockBtn.innerText = "✅ Unlocking...";
+        
+        setTimeout(() => {
+            window.location.href = targetUrl;
+        }, 500);
+
+    }).catch(e => {
+        console.error("Ad Error / Blocked:", e);
+        // If ad fails to load, still redirect user to content
+        window.location.href = targetUrl;
+    });
+}
+</script>
+
+<!-- In-App Interstitial Auto Trigger Script -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    show_11874048({
+      type: 'inApp',
+      inAppSettings: {
+        frequency: 2,
+        capping: 0.1,
+        interval: 60,
+        timeout: 10,
+        everyPage: false
+      }
+    }).then(() => {
+        console.log("In-App Interstitial script initialized");
+    }).catch(e => {
+        console.error("Interstitial Ad Error:", e);
+    });
+});
+</script>
+    
 </body>
 </html>
