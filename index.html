@@ -265,70 +265,78 @@ show_11874048({
 });
 </script>
 
-<!-- Anti-Adblocker CSS -->
+<!-- Anti-Adblocker Style -->
 <style>
-#arlinablock {
-    background: rgba(0, 0, 0, 0.85);
+#adblock-overlay {
     position: fixed;
-    left: 0; right: 0; top: 0; bottom: 0;
-    z-index: 999999;
-    display: none; /* Initially hidden */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 9999999;
+    display: none; /* Default Hidden */
     align-items: center;
     justify-content: center;
-}
-#arlinablock .inner {
-    background: #e3482d;
-    color: #fff;
     text-align: center;
-    max-width: 450px;
-    width: 90%;
-    padding: 30px 20px;
-    border-radius: 10px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    font-family: Arial, sans-serif;
 }
-#arlinablock h2 { margin-top: 0; }
-#arlinablock button {
+.adblock-box {
+    background: #1c1c1c;
+    border: 2px solid #ff0057;
+    padding: 25px;
+    border-radius: 12px;
+    max-width: 380px;
+    width: 85%;
+    box-shadow: 0 0 20px rgba(255, 0, 87, 0.4);
+}
+.adblock-box h2 {
+    color: #ff0057;
+    margin-top: 0;
+    font-size: 20px;
+}
+.adblock-box p {
+    color: #ccc;
+    font-size: 14px;
+    line-height: 1.5;
+}
+.adblock-btn {
+    background: #ff0057;
+    color: #fff;
+    border: none;
     padding: 10px 20px;
-    border: 0;
-    background: #fff;
-    color: #e3482d;
     font-weight: bold;
-    border-radius: 5px;
+    border-radius: 6px;
     cursor: pointer;
     margin-top: 15px;
+    width: 100%;
 }
 </style>
 
-<!-- Anti-Adblocker HTML Modal -->
-<div id="arlinablock">
-    <div class="inner">
+<!-- Anti-Adblocker Modal Container -->
+<div id="adblock-overlay">
+    <div class="adblock-box">
         <h2>⚠️ AdBlocker Detected!</h2>
-        <p>Please disable your AdBlocker / Brave Shields to unlock and view the content.</p>
-        <button onclick="window.location.reload()">🔄 Refresh Page</button>
+        <p>Please disable your AdBlocker or Brave Shields to access and unlock the full video content.</p>
+        <button class="adblock-btn" onclick="window.location.reload()">I Disabled It (Refresh)</button>
     </div>
 </div>
 
-<!-- Anti-Adblocker Pure JS Detection -->
+<!-- Accurate Detection Script -->
 <script>
 window.addEventListener('load', function() {
-    // 1. Create a dummy ad element to test if adblocker removes it
-    const fakeAd = document.createElement('div');
-    fakeAd.className = 'adsbygoogle ad-zone ad-space vcard';
-    fakeAd.style.position = 'absolute';
-    fakeAd.style.left = '-9999px';
-    fakeAd.style.height = '1px';
-    document.body.appendChild(fakeAd);
+    // Real ad domain script load korar chesta korbe
+    const adScript = document.createElement('script');
+    adScript.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
+    adScript.async = true;
 
-    // 2. Check after short interval
-    setTimeout(function() {
-        if (fakeAd.offsetHeight === 0 || fakeAd.clientWidth === 0 || window.getComputedStyle(fakeAd).display === 'none') {
-            // AdBlocker Active - Show Warning Overlay
-            document.getElementById('arlinablock').style.display = 'flex';
-        }
-        fakeAd.remove();
-    }, 300);
+    // Jodi AdBlocker eita block kore (onerror trigger hoy)
+    adScript.onerror = function() {
+        document.getElementById('adblock-overlay').style.display = 'flex';
+    };
+
+    document.head.appendChild(adScript);
 });
-</script>
-    
+</script>    
 </body>
 </html>
