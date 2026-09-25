@@ -107,33 +107,40 @@
 
 </div>
 
-<!-- Rewarded Popup Handler Script -->
 <script>
 function handleUnlock(targetUrl, buttonId) {
     const unlockBtn = document.getElementById(buttonId);
     const originalText = unlockBtn.innerText;
 
-    unlockBtn.innerText = "⏳ Loading Ad...";
+    unlockBtn.innerText = "⏳ Complete the Ad/Task...";
     unlockBtn.disabled = true;
 
-    // Trigger Rewarded Ad Popup
+    // Trigger Monetag Rewarded Popup
     show_11874048('pop').then(() => {
-        // User successfully watched/closed the ad
-        unlockBtn.innerText = "✅ Unlocking...";
-        
+        // User successfully ad complete korle ei block-e ashbe
+        unlockBtn.innerText = "⏳ Verifying Task (5s)...";
+
+        // Minimum 5 second waiting time for verification
         setTimeout(() => {
-            window.location.href = targetUrl;
-        }, 500);
+            unlockBtn.innerText = "✅ Unlocked!";
+            
+            setTimeout(() => {
+                window.location.href = targetUrl;
+            }, 500);
+        }, 5000); // 5 sec wait
 
     }).catch(e => {
-        console.error("Ad Error / Blocked:", e);
-        // If ad fails to load, still redirect user to content
-        window.location.href = targetUrl;
+        // User task complete na korle ba skip korle
+        console.error("Task Incomplete or Error:", e);
+        
+        alert("⚠️ You must complete the ad/task fully to unlock the content!");
+        
+        // Button reset kore deya jate user abar try korte pare
+        unlockBtn.innerText = originalText;
+        unlockBtn.disabled = false;
     });
 }
 </script>
-
-
     
 </body>
 </html>
