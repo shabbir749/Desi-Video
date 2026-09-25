@@ -116,28 +116,51 @@ if (window.Telegram && window.Telegram.WebApp) {
     window.Telegram.WebApp.expand();
 }
 
-// Rewarded / Interstitial Ad Trigger
-function handleUnlock(targetUrl, buttonId) {
+// 1. Auto Trigger Interstitial Ad on Load
+document.addEventListener("DOMContentLoaded", function() {
+    if (typeof show_11874048 === 'function') {
+        show_11874048({
+            type: 'inApp',
+            inAppSettings: {
+                frequency: 2,
+                capping: 0.1,
+                interval: 15,
+                timeout: 2,
+                everyPage: true
+            }
+        }).catch(e => console.log("Auto Interstitial Ad Error:", e));
+    }
+});
+
+// 2. 2-Step Conflict-Free Monetag + Adsterra Smartlink Handler
+function handleUnlock(smartlinkUrl, buttonId) {
     const unlockBtn = document.getElementById(buttonId);
-    unlockBtn.innerText = "⏳ Loading Ad...";
+    
+    unlockBtn.innerText = "⏳ Loading Ad/Task...";
     unlockBtn.disabled = true;
 
-    // Correct Monetag Function Execution
     if (typeof show_11874048 === 'function') {
         show_11874048().then(() => {
-            // Ad completed or closed by user
-            unlockBtn.innerText = "✅ Unlocking...";
-            setTimeout(() => {
-                window.location.href = targetUrl;
-            }, 300);
+            unlockBtn.innerText = "✅ Task Done! Click to Access";
+            unlockBtn.style.background = "#28a745";
+            unlockBtn.disabled = false;
+            
+            unlockBtn.onclick = function() {
+                window.location.href = smartlinkUrl;
+            };
+
         }).catch(e => {
             console.error("Ad Error / Blocked:", e);
-            // Fallback redirect if ad fails
-            window.location.href = targetUrl;
+            unlockBtn.innerText = "▶️ Continue to Video";
+            unlockBtn.style.background = "#28a745";
+            unlockBtn.disabled = false;
+            
+            unlockBtn.onclick = function() {
+                window.location.href = smartlinkUrl;
+            };
         });
     } else {
-        // Fallback if SDK not ready
-        window.location.href = targetUrl;
+        window.location.href = smartlinkUrl;
     }
 }
 </script>
