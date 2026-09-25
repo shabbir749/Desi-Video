@@ -2,9 +2,6 @@
 <html lang="en">
 <head>
 
-    <!-- Monetag SDK -->
-    <script src='//libtl.com/sdk.js' data-zone='11874048' data-sdk='show_11874048'></script>
-        
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Desi Video</title>
@@ -60,9 +57,26 @@
         background: #ff2a75;
     }
 
-    .lock-btn:disabled {
-        background: #555;
-        cursor: not-allowed;
+    /* 10-Second Countdown Overlay Modal Style */
+    #ad-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.95);
+        z-index: 9999;
+        text-align: center;
+        box-sizing: border-box;
+        padding-top: 20px;
+    }
+
+    .timer-text {
+        font-size: 18px;
+        color: #ffcc00;
+        margin-bottom: 15px;
+        font-weight: bold;
     }
     </style>
 
@@ -80,7 +94,7 @@
         <h3>Uno Sir Viral Video</h3>
         <img src="https://i.ibb.co.com/yn5SwqC5/IMG-20260426-223944-347.jpg" style="width:100%; border-radius:10px; margin-bottom:10px;">
         <p>Watch full premium content. Limited access only.</p>
-        <button class="lock-btn" id="btn-1" onclick="handleUnlock('https://t.me/+taSBSaAqYmw4NWJl', 'btn-1')">
+        <button class="lock-btn" onclick="startUnlockProcess('https://t.me/+taSBSaAqYmw4NWJl')">
             🔒 Unlock Now
         </button>
     </div>
@@ -90,7 +104,7 @@
         <h3>Tanha Viral Video</h3>
         <img src="https://i.ibb.co.com/39bNmQ5Q/IMG-20260426-215107-531.jpg" style="width:100%; border-radius:10px; margin-bottom:10px;">
         <p>Don't miss this content. Only for real viewers.</p>
-        <button class="lock-btn" id="btn-2" onclick="handleUnlock('https://t.me/+taSBSaAqYmw4NWJl', 'btn-2')">
+        <button class="lock-btn" onclick="startUnlockProcess('https://t.me/+taSBSaAqYmw4NWJl')">
             🔒 Unlock Now
         </button>
     </div>
@@ -100,47 +114,55 @@
         <h3>New leaks 3m 32s</h3>
         <img src="https://i.ibb.co.com/RG6nCzpP/IMG-20260924-142051-715.jpg" style="width:100%; border-radius:10px; margin-bottom:10px;">
         <p>Hidden content. Click to access.</p>
-        <button class="lock-btn" id="btn-3" onclick="handleUnlock('https://t.me/+taSBSaAqYmw4NWJl', 'btn-3')">
+        <button class="lock-btn" onclick="startUnlockProcess('https://t.me/+taSBSaAqYmw4NWJl')">
             🔒 Unlock Now
         </button>
     </div>
 
 </div>
 
+<!-- Forced 10-Second SmartLink Ad Modal -->
+<div id="ad-modal">
+    <div class="timer-text" id="timer-display">
+        ⏳ Unlocking Content in 10 seconds...
+    </div>
+    <!-- Adsterra SmartLink Open via New Tab / Direct Popup or Iframe Integration -->
+</div>
+
 <script>
-function handleUnlock(targetUrl, buttonId) {
-    const unlockBtn = document.getElementById(buttonId);
-    const originalText = unlockBtn.innerText;
+// Adsterra SmartLink/Direct Link URL
+const ADSTERRA_SMARTLINK = "https://conscientiouscabbageadrift.com/w779nvjn4q?key=46171100d29ec2e4e0072b2a17fca69d";
 
-    unlockBtn.innerText = "⏳ Complete the Ad/Task...";
-    unlockBtn.disabled = true;
+function startUnlockProcess(targetUrl) {
+    // 1. Open Adsterra SmartLink in new tab/window immediately
+    if (ADSTERRA_SMARTLINK && ADSTERRA_SMARTLINK !== "https://conscientiouscabbageadrift.com/w779nvjn4q?key=46171100d29ec2e4e0072b2a17fca69d") {
+        window.open(ADSTERRA_SMARTLINK, '_blank');
+    }
 
-    // Trigger Monetag Rewarded Popup
-    show_11874048('pop').then(() => {
-        // User successfully ad complete korle ei block-e ashbe
-        unlockBtn.innerText = "⏳ Verifying Task (5s)...";
+    // 2. Display Overlay Screen & Timer
+    const modal = document.getElementById('ad-modal');
+    const timerDisplay = document.getElementById('timer-display');
+    modal.style.display = 'block';
 
-        // Minimum 5 second waiting time for verification
-        setTimeout(() => {
-            unlockBtn.innerText = "✅ Unlocked!";
-            
+    let timeLeft = 10;
+
+    // 3. Forced 10 Seconds Countdown Loop
+    const countdownInterval = setInterval(() => {
+        timeLeft--;
+        timerDisplay.innerText = `⏳ Unlocking Content in ${timeLeft} seconds...`;
+
+        if (timeLeft <= 0) {
+            clearInterval(countdownInterval);
+            timerDisplay.innerText = "✅ Redirecting to Content...";
+
+            // 4. Auto-redirect to Main Target Link (Telegram/DoodStream)
             setTimeout(() => {
                 window.location.href = targetUrl;
             }, 500);
-        }, 5000); // 5 sec wait
-
-    }).catch(e => {
-        // User task complete na korle ba skip korle
-        console.error("Task Incomplete or Error:", e);
-        
-        alert("⚠️ You must complete the ad/task fully to unlock the content!");
-        
-        // Button reset kore deya jate user abar try korte pare
-        unlockBtn.innerText = originalText;
-        unlockBtn.disabled = false;
-    });
+        }
+    }, 1000);
 }
 </script>
-    
+
 </body>
 </html>
