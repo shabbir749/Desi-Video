@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Desi Video</title>
-
-    <!-- Telegram Mini App WebApp Bridge (Mandatory) -->
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
     <!-- Monetag SDK -->
     <script src='//libtl.com/sdk.js' data-zone='11874048' data-sdk='show_11874048'></script>
+        
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desi Video</title>
 
     <style>
     body {
@@ -56,7 +54,6 @@
         width: 100%;
         box-sizing: border-box;
         text-align: center;
-        font-weight: bold;
     }
 
     .lock-btn:hover {
@@ -68,6 +65,7 @@
         cursor: not-allowed;
     }
     </style>
+
 </head>
 <body>
 
@@ -80,7 +78,7 @@
     <!-- Post 1 -->
     <div class="post">
         <h3>Uno Sir Viral Video</h3>
-        <img src="https://i.ibb.co.com/yn5SwqC5/IMG-20260426-223944-347.jpg" style="width:100%; border-radius:10px; margin-bottom:10px;">
+        <img src="IMG_20260426_223944_347.jpg" style="width:100%; border-radius:10px; margin-bottom:10px;">
         <p>Watch full premium content. Limited access only.</p>
         <button class="lock-btn" id="btn-1" onclick="handleUnlock('https://cutt.ly/AyvQuRtm', 'btn-1')">
             🔒 Unlock Now
@@ -90,7 +88,7 @@
     <!-- Post 2 -->
     <div class="post">
         <h3>Tanha Viral Video</h3>
-        <img src="https://i.ibb.co.com/39bNmQ5Q/IMG-20260426-215107-531.jpg" style="width:100%; border-radius:10px; margin-bottom:10px;">
+        <img src="IMG_20260426_215107_531.jpg" style="width:100%; border-radius:10px; margin-bottom:10px;">
         <p>Don't miss this content. Only for real viewers.</p>
         <button class="lock-btn" id="btn-2" onclick="handleUnlock('https://cutt.ly/AyvQuRtm', 'btn-2')">
             🔒 Unlock Now
@@ -99,8 +97,8 @@
 
     <!-- Post 3 -->
     <div class="post">
-        <h3>Desi girl 3m 32s</h3>
-        <img src="https://i.ibb.co.com/RG6nCzpP/IMG-20260924-142051-715.jpg" style="width:100%; border-radius:10px; margin-bottom:10px;">
+        <h3>Arohi mim 3m 32s</h3>
+        <img src="IMAGE_URL_HERE" style="width:100%; border-radius:10px; margin-bottom:10px;">
         <p>Hidden content. Click to access.</p>
         <button class="lock-btn" id="btn-3" onclick="handleUnlock('https://cutt.ly/AyvQuRtm', 'btn-3')">
             🔒 Unlock Now
@@ -108,51 +106,55 @@
     </div>
 
 </div>
-<script>
-// Expand Telegram Mini App Window
-if (window.Telegram && window.Telegram.WebApp) {
-    window.Telegram.WebApp.ready();
-    window.Telegram.WebApp.expand();
-}
 
-// 2-Step Conflict-Free Monetag + Adsterra Smartlink Handler
-function handleUnlock(smartlinkUrl, buttonId) {
+<!-- Additional Monetag Script -->
+<script src="https://conscientiouscabbageadrift.com/35/f7/6a/35f76af80c32a6110e5f304b6124faa1.js"></script>
+
+<!-- Rewarded Popup Handler Script -->
+<script>
+function handleUnlock(targetUrl, buttonId) {
     const unlockBtn = document.getElementById(buttonId);
-    
-    // Step 1: Loading state
-    unlockBtn.innerText = "⏳ Loading Ad/Task...";
+    const originalText = unlockBtn.innerText;
+
+    unlockBtn.innerText = "⏳ Loading Ad...";
     unlockBtn.disabled = true;
 
-    // Trigger Monetag Rewarded Ad
-    if (typeof show_11874048 === 'function') {
-        show_11874048().then(() => {
-            // Task Successfully Completed!
-            unlockBtn.innerText = "✅ Task Done! Click to Access";
-            unlockBtn.style.background = "#28a745"; // Green button
-            unlockBtn.disabled = false;
-            
-            // Set 2nd Click -> Redirects to Adsterra Smartlink
-            unlockBtn.onclick = function() {
-                window.location.href = smartlinkUrl;
-            };
+    // Trigger Rewarded Ad Popup
+    show_11874048('pop').then(() => {
+        // User successfully watched/closed the ad
+        unlockBtn.innerText = "✅ Unlocking...";
+        
+        setTimeout(() => {
+            window.location.href = targetUrl;
+        }, 500);
 
-        }).catch(e => {
-            console.error("Ad Error / Blocked:", e);
-            // If Monetag fails or is blocked, allow user to continue
-            unlockBtn.innerText = "▶️ Continue to Video";
-            unlockBtn.style.background = "#28a745";
-            unlockBtn.disabled = false;
-            
-            unlockBtn.onclick = function() {
-                window.location.href = smartlinkUrl;
-            };
-        });
-    } else {
-        // Fallback if SDK is not loaded
-        window.location.href = smartlinkUrl;
-    }
+    }).catch(e => {
+        console.error("Ad Error / Blocked:", e);
+        // If ad fails to load, still redirect user to content
+        window.location.href = targetUrl;
+    });
 }
 </script>
 
+<!-- In-App Interstitial Auto Trigger Script -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    show_11874048({
+      type: 'inApp',
+      inAppSettings: {
+        frequency: 2,
+        capping: 0.1,
+        interval: 30,
+        timeout: 5,
+        everyPage: false
+      }
+    }).then(() => {
+        console.log("In-App Interstitial script initialized");
+    }).catch(e => {
+        console.error("Interstitial Ad Error:", e);
+    });
+});
+</script>
+    
 </body>
-    </html>
+</html>
