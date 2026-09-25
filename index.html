@@ -108,7 +108,6 @@
     </div>
 
 </div>
-
 <script>
 // Expand Telegram Mini App Window
 if (window.Telegram && window.Telegram.WebApp) {
@@ -116,41 +115,30 @@ if (window.Telegram && window.Telegram.WebApp) {
     window.Telegram.WebApp.expand();
 }
 
-// 1. Auto Trigger Interstitial Ad on Load
-document.addEventListener("DOMContentLoaded", function() {
-    if (typeof show_11874048 === 'function') {
-        show_11874048({
-            type: 'inApp',
-            inAppSettings: {
-                frequency: 2,
-                capping: 0.1,
-                interval: 15,
-                timeout: 2,
-                everyPage: true
-            }
-        }).catch(e => console.log("Auto Interstitial Ad Error:", e));
-    }
-});
-
-// 2. 2-Step Conflict-Free Monetag + Adsterra Smartlink Handler
+// 2-Step Conflict-Free Monetag + Adsterra Smartlink Handler
 function handleUnlock(smartlinkUrl, buttonId) {
     const unlockBtn = document.getElementById(buttonId);
     
+    // Step 1: Loading state
     unlockBtn.innerText = "⏳ Loading Ad/Task...";
     unlockBtn.disabled = true;
 
+    // Trigger Monetag Rewarded Ad
     if (typeof show_11874048 === 'function') {
         show_11874048().then(() => {
+            // Task Successfully Completed!
             unlockBtn.innerText = "✅ Task Done! Click to Access";
-            unlockBtn.style.background = "#28a745";
+            unlockBtn.style.background = "#28a745"; // Green button
             unlockBtn.disabled = false;
             
+            // Set 2nd Click -> Redirects to Adsterra Smartlink
             unlockBtn.onclick = function() {
                 window.location.href = smartlinkUrl;
             };
 
         }).catch(e => {
             console.error("Ad Error / Blocked:", e);
+            // If Monetag fails or is blocked, allow user to continue
             unlockBtn.innerText = "▶️ Continue to Video";
             unlockBtn.style.background = "#28a745";
             unlockBtn.disabled = false;
@@ -160,6 +148,7 @@ function handleUnlock(smartlinkUrl, buttonId) {
             };
         });
     } else {
+        // Fallback if SDK is not loaded
         window.location.href = smartlinkUrl;
     }
 }
