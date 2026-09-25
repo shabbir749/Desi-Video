@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-    <!-- Monetag SDK -->
-    <script src='//libtl.com/sdk.js' data-zone='11874048' data-sdk='show_11874048'></script>
-        
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Desi Video</title>
+
+    <!-- Telegram Mini App WebApp Bridge (Mandatory) -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+    <!-- Monetag SDK -->
+    <script src='//libtl.com/sdk.js' data-zone='11874048' data-sdk='show_11874048'></script>
 
     <style>
     body {
@@ -54,6 +56,7 @@
         width: 100%;
         box-sizing: border-box;
         text-align: center;
+        font-weight: bold;
     }
 
     .lock-btn:hover {
@@ -65,7 +68,6 @@
         cursor: not-allowed;
     }
     </style>
-
 </head>
 <body>
 
@@ -107,51 +109,38 @@
 
 </div>
 
-<!-- Rewarded Popup Handler Script -->
 <script>
+// Expand Telegram Mini App Window
+if (window.Telegram && window.Telegram.WebApp) {
+    window.Telegram.WebApp.ready();
+    window.Telegram.WebApp.expand();
+}
+
+// Rewarded / Interstitial Ad Trigger
 function handleUnlock(targetUrl, buttonId) {
     const unlockBtn = document.getElementById(buttonId);
-    const originalText = unlockBtn.innerText;
-
     unlockBtn.innerText = "⏳ Loading Ad...";
     unlockBtn.disabled = true;
 
-    // Trigger Rewarded Ad Popup
-    show_11874048('pop').then(() => {
-        // User successfully watched/closed the ad
-        unlockBtn.innerText = "✅ Unlocking...";
-        
-        setTimeout(() => {
+    // Correct Monetag Function Execution
+    if (typeof show_11874048 === 'function') {
+        show_11874048().then(() => {
+            // Ad completed or closed by user
+            unlockBtn.innerText = "✅ Unlocking...";
+            setTimeout(() => {
+                window.location.href = targetUrl;
+            }, 300);
+        }).catch(e => {
+            console.error("Ad Error / Blocked:", e);
+            // Fallback redirect if ad fails
             window.location.href = targetUrl;
-        }, 500);
-
-    }).catch(e => {
-        console.error("Ad Error / Blocked:", e);
-        // If ad fails to load, still redirect user to content
+        });
+    } else {
+        // Fallback if SDK not ready
         window.location.href = targetUrl;
-    });
+    }
 }
 </script>
 
-<!-- In-App Interstitial Auto Trigger Script -->
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    show_11874048({
-      type: 'inApp',
-      inAppSettings: {
-        frequency: 2,
-        capping: 0.1,
-        interval: 20,
-        timeout: 2,
-        everyPage: false
-      }
-    }).then(() => {
-        console.log("In-App Interstitial script initialized");
-    }).catch(e => {
-        console.error("Interstitial Ad Error:", e);
-    });
-});
-</script>
-    
 </body>
-</html>
+    </html>
