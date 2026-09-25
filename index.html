@@ -57,26 +57,49 @@
         background: #ff2a75;
     }
 
-    /* 10-Second Countdown Overlay Modal Style */
-    #ad-modal {
+    /* Fullscreen Interstitial Ad Page Style */
+    #ad-overlay {
         display: none;
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(0, 0, 0, 0.95);
-        z-index: 9999;
-        text-align: center;
-        box-sizing: border-box;
-        padding-top: 20px;
+        background: #000;
+        z-index: 999999;
     }
 
-    .timer-text {
-        font-size: 18px;
-        color: #ffcc00;
-        margin-bottom: 15px;
+    .ad-top-bar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 50px;
+        background: rgba(0, 0, 0, 0.9);
+        color: #fff;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 15px;
+        box-sizing: border-box;
+        border-bottom: 2px solid #ff0057;
+        z-index: 10;
+    }
+
+    .timer-badge {
+        background: #ff0057;
+        color: #fff;
+        padding: 6px 12px;
+        border-radius: 20px;
         font-weight: bold;
+        font-size: 13px;
+    }
+
+    .ad-iframe {
+        width: 100%;
+        height: calc(100% - 50px);
+        margin-top: 50px;
+        border: none;
     }
     </style>
 
@@ -121,41 +144,42 @@
 
 </div>
 
-<!-- Forced 10-Second SmartLink Ad Modal -->
-<div id="ad-modal">
-    <div class="timer-text" id="timer-display">
-        ⏳ Unlocking Content in 10 seconds...
+<!-- Fullscreen Ad Screen Overlay -->
+<div id="ad-overlay">
+    <div class="ad-top-bar">
+        <span>🔥 Sponsor Video Ad</span>
+        <div class="timer-badge" id="timer-display">Closing in 10s</div>
     </div>
-    <!-- Adsterra SmartLink Open via New Tab / Direct Popup or Iframe Integration -->
+    <iframe class="ad-iframe" id="ad-frame" src="about:blank"></iframe>
 </div>
 
 <script>
-// Adsterra SmartLink/Direct Link URL
+// Adsterra SmartLink URL
 const ADSTERRA_SMARTLINK = "https://conscientiouscabbageadrift.com/w779nvjn4q?key=46171100d29ec2e4e0072b2a17fca69d";
 
 function startUnlockProcess(targetUrl) {
-    // 1. Open Adsterra SmartLink in new tab/window immediately
-    if (ADSTERRA_SMARTLINK && ADSTERRA_SMARTLINK !== "https://conscientiouscabbageadrift.com/w779nvjn4q?key=46171100d29ec2e4e0072b2a17fca69d") {
-        window.open(ADSTERRA_SMARTLINK, '_blank');
-    }
-
-    // 2. Display Overlay Screen & Timer
-    const modal = document.getElementById('ad-modal');
+    const overlay = document.getElementById('ad-overlay');
     const timerDisplay = document.getElementById('timer-display');
-    modal.style.display = 'block';
+    const adFrame = document.getElementById('ad-frame');
+
+    // 1. Adsterra SmartLink Load in Fullscreen View
+    adFrame.src = ADSTERRA_SMARTLINK;
+
+    // 2. Display Overlay
+    overlay.style.display = 'block';
 
     let timeLeft = 10;
 
-    // 3. Forced 10 Seconds Countdown Loop
-    const countdownInterval = setInterval(() => {
+    // 3. 10 Seconds Forced Timer Loop
+    const countdown = setInterval(() => {
         timeLeft--;
-        timerDisplay.innerText = `⏳ Unlocking Content in ${timeLeft} seconds...`;
+        if (timeLeft > 0) {
+            timerDisplay.innerText = `Closing in ${timeLeft}s`;
+        } else {
+            clearInterval(countdown);
+            timerDisplay.innerText = "✅ Unlocked! Redirecting...";
 
-        if (timeLeft <= 0) {
-            clearInterval(countdownInterval);
-            timerDisplay.innerText = "✅ Redirecting to Content...";
-
-            // 4. Auto-redirect to Main Target Link (Telegram/DoodStream)
+            // 4. Auto-redirect to Target Telegram Link
             setTimeout(() => {
                 window.location.href = targetUrl;
             }, 500);
