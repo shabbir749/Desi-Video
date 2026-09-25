@@ -133,25 +133,7 @@ function handleUnlock(targetUrl, buttonId) {
 }
 </script>
 
-<!-- In-App Interstitial Auto Trigger Script -->
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    show_11874048({
-      type: 'inApp',
-      inAppSettings: {
-        frequency: 2,
-        capping: 0.1,
-        interval: 30,
-        timeout: 5,
-        everyPage: false
-      }
-    }).then(() => {
-        console.log("In-App Interstitial script initialized");
-    }).catch(e => {
-        console.error("Interstitial Ad Error:", e);
-    });
-});
-</script>
+
     
 </body>
 </html>
