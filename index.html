@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
+<script src='//libtl.com/sdk.js' data-zone='11874048' data-sdk='show_11874048'></script>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Desi Video</title>
@@ -188,5 +189,33 @@ function startUnlockProcess(targetUrl) {
 }
 </script>
 
+
+
+// In-App Interstitial
+
+show_11874048({
+  type: 'inApp',
+  inAppSettings: {
+    frequency: 3,
+    capping: 0.2,
+    interval: 40,
+    timeout: 5,
+    everyPage: false
+  }
+})
+
+/*
+This value is decoded as follows:
+- show automatically 2 ads
+  within 0.1 hours (6 minutes)
+  with a 30-second interval between them
+  and a 5-second delay before the first one is shown.
+  The last digit, 0, means that the session will be saved when you navigate between pages.
+  If you set the last digit as 1, then at any transition between pages,
+  the session will be reset, and the ads will start again.
+*/
+
+
+    
 </body>
 </html>
