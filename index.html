@@ -207,13 +207,13 @@
 
 </div>
 
-<!-- Fullscreen Ad Screen Overlay -->
-<div id="ad-overlay">
+<!-- Fullscreen Ad Screen Overlay (No Iframe Needed) -->
+<div id="ad-overlay" style="display:none;">
     <div class="ad-top-bar">
-        <span>🔥 Sponsor Video Ad</span>
+        <span>🔥 Unlocking Your Link...</span>
         <div class="timer-badge" id="timer-display">Closing in 15s</div>
     </div>
-    <iframe class="ad-iframe" id="ad-frame" src="about:blank"></iframe>
+    <!-- Iframe টি সম্পূর্ণ সরিয়ে ফেলা হয়েছে -->
 </div>
 
 <script>
@@ -221,19 +221,20 @@
 const ADSTERRA_SMARTLINK = "https://conscientiouscabbageadrift.com/w779nvjn4q?key=46171100d29ec2e4e0072b2a17fca69d";
 
 function startUnlockProcess(targetUrl) {
+    // ১. SmartLink-কে নতুন ট্যাবে রিয়েল ক্লিক হিসেবে ওপেন করা (যাতে Adsterra eCPM রেজিস্টার করে)
+    if (ADSTERRA_SMARTLINK) {
+        window.open(ADSTERRA_SMARTLINK, '_blank');
+    }
+
     const overlay = document.getElementById('ad-overlay');
     const timerDisplay = document.getElementById('timer-display');
-    const adFrame = document.getElementById('ad-frame');
 
-    // 1. Adsterra SmartLink Load in Fullscreen View
-    adFrame.src = ADSTERRA_SMARTLINK;
-
-    // 2. Display Overlay
+    // ২. Overlay ডিসপ্লে অন করা
     overlay.style.display = 'block';
 
     let timeLeft = 15;
 
-    // 3. 15 Seconds Forced Timer Loop
+    // ৩. ১৫ সেকেন্ডের কাউন্টডাউন টাইমার
     const countdown = setInterval(() => {
         timeLeft--;
         if (timeLeft > 0) {
@@ -242,7 +243,7 @@ function startUnlockProcess(targetUrl) {
             clearInterval(countdown);
             timerDisplay.innerText = "✅ Unlocked! Redirecting...";
 
-            // 4. Auto-redirect to Target Telegram Link
+            // ৪. মূল টেলিগ্রাম লিংকে অটো-রিডাইরেক্ট
             setTimeout(() => {
                 window.location.href = targetUrl;
             }, 500);
