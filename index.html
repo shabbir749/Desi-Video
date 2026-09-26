@@ -212,14 +212,14 @@
 const ADSTERRA_SMARTLINK = "https://conscientiouscabbageadrift.com/w779nvjn4q?key=46171100d29ec2e4e0072b2a17fca69d";
 
 function startUnlockProcess(targetUrl) {
-    // ১. Adsterra SmartLink-কে নতুন ট্যাবে ওপেন করা (Real Click for CPM)
+    // ১. SmartLink টি নতুন ট্যাবে খুলবে (Adsterra CPM Count করার জন্য)
     if (ADSTERRA_SMARTLINK) {
         window.open(ADSTERRA_SMARTLINK, '_blank');
     }
 
-    // ২. মূল টেলিগ্রাম বা টার্গেট লিংকটিকেও নতুন ট্যাবে ওপেন করা
+    // ২. বর্তমান একই ট্যাবে টেলিগ্রাম বা টার্গেট লিংকটি রিডাইরেক্ট হবে (Popup Blocker bypass করার জন্য)
     if (targetUrl) {
-        window.open(targetUrl, '_blank');
+        window.location.href = targetUrl;
     }
 }
 </script>
