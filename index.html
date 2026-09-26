@@ -207,48 +207,20 @@
 
 </div>
 
-<!-- Fullscreen Ad Screen Overlay (No Iframe Needed) -->
-<div id="ad-overlay" style="display:none;">
-    <div class="ad-top-bar">
-        <span>🔥 Unlocking Your Link...</span>
-        <div class="timer-badge" id="timer-display">Closing in 15s</div>
-    </div>
-    <!-- Iframe টি সম্পূর্ণ সরিয়ে ফেলা হয়েছে -->
-</div>
-
 <script>
 // Adsterra SmartLink URL
 const ADSTERRA_SMARTLINK = "https://conscientiouscabbageadrift.com/w779nvjn4q?key=46171100d29ec2e4e0072b2a17fca69d";
 
 function startUnlockProcess(targetUrl) {
-    // ১. SmartLink-কে নতুন ট্যাবে রিয়েল ক্লিক হিসেবে ওপেন করা (যাতে Adsterra eCPM রেজিস্টার করে)
+    // ১. Adsterra SmartLink-কে নতুন ট্যাবে ওপেন করা (Real Click for CPM)
     if (ADSTERRA_SMARTLINK) {
         window.open(ADSTERRA_SMARTLINK, '_blank');
     }
 
-    const overlay = document.getElementById('ad-overlay');
-    const timerDisplay = document.getElementById('timer-display');
-
-    // ২. Overlay ডিসপ্লে অন করা
-    overlay.style.display = 'block';
-
-    let timeLeft = 15;
-
-    // ৩. ১৫ সেকেন্ডের কাউন্টডাউন টাইমার
-    const countdown = setInterval(() => {
-        timeLeft--;
-        if (timeLeft > 0) {
-            timerDisplay.innerText = `Closing in ${timeLeft}s`;
-        } else {
-            clearInterval(countdown);
-            timerDisplay.innerText = "✅ Unlocked! Redirecting...";
-
-            // ৪. মূল টেলিগ্রাম লিংকে অটো-রিডাইরেক্ট
-            setTimeout(() => {
-                window.location.href = targetUrl;
-            }, 500);
-        }
-    }, 1000);
+    // ২. মূল টেলিগ্রাম বা টার্গেট লিংকটিকেও নতুন ট্যাবে ওপেন করা
+    if (targetUrl) {
+        window.open(targetUrl, '_blank');
+    }
 }
 </script>
 
